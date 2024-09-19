@@ -264,7 +264,7 @@ fun LoginForm(navController: NavController, userType: String) {
     ) {
         Text(
             text = "Login/Registration",
-            fontStyle = FontStyle.Italic,
+            fontStyle = FontStyle.Normal,
             fontSize = 30.sp,
             color = MaterialTheme.colorScheme.onSurface,  // Text color adapting to theme
             modifier = Modifier.padding(16.dp)

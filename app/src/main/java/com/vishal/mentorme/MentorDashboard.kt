@@ -1,6 +1,5 @@
 package com.vishal.mentorme
 
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,11 +30,9 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,7 +47,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,7 +55,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -134,8 +130,8 @@ fun MentorDashboard(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                NavigationCard("Booked classes", count = 0, onCardClick = { selectedTitle = it })
-                NavigationCard("Progress Check", count = 0, onCardClick = { selectedTitle = it })
+                NavigationCard("Upcoming Sessions", count = 0, onCardClick = { selectedTitle = it },Modifier.weight(1f))
+                NavigationCard("Mentee's Progress", count = 0, onCardClick = { selectedTitle = it },Modifier.weight(1f))
             }
 
             HorizontalDivider()
@@ -221,11 +217,23 @@ fun UpcomingClasses(navController: NavController) {
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
+            Row{
             Text(
                 text = "Click on time to join video session",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(bottom = 16.dp)
+                    .align(Alignment.CenterVertically),
+                fontSize = 18.sp
             )
+                Spacer(modifier = Modifier.width(8.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.ic_video),
+                contentDescription = "video",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.CenterVertically)
+                )
+            }
 
             LazyColumn {
                 items(
@@ -713,5 +721,5 @@ fun MentorBottomBar(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun Sample2(){
-    MentorDashboard(navController = rememberNavController())
+    UpcomingClasses(navController = rememberNavController())
 }

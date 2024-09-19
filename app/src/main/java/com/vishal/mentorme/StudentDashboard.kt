@@ -104,6 +104,7 @@ fun StudentDashboard(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Header
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
@@ -140,104 +141,169 @@ fun StudentDashboard(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
             HorizontalDivider()
             Spacer(modifier = Modifier.height(8.dp))
+
+            // Navigation Cards
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                NavigationCard("Booked classes", count = 0, onCardClick = { selectedTitle = it })
-                NavigationCard("Progress Check", count = 0, onCardClick = { selectedTitle = it })
+                NavigationCard("Booked classes", count = 0, onCardClick = { selectedTitle = it },Modifier.weight(1f))
+                NavigationCard("Progress Check", count = 0, onCardClick = { selectedTitle = it },Modifier.weight(1f))
+                NavigationCard("Job Suggestions", count = 0, onCardClick = { selectedTitle = it },Modifier.weight(1f))
             }
 
             HorizontalDivider()
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Display selected section content
             when (selectedTitle) {
                 "Booked classes" -> {
-                    Text(
-                        "Booked Classes (0)",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text("You do not have any classes booked")
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Button(
-                        onClick = {},
-                        colors = ButtonDefaults.buttonColors()
-
-                    ) {
-                        Text("+ Book a Session")
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        "Your Past Classes (9)",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    LazyColumn {
-                        items(listOf(
-                            ClassInfo("AI Project", "Tuesday 03 Sep 2024, 18:00 - 19:00",  "Prince Albert"),
-                            ClassInfo("Android Development Workshop", "Monday 01 Sep 2024, 14:00 - 15:00",  "Jane Doe"),
-                            // Add more class info here
-                        )) { classInfo ->
-                            ClassCard(
-                                title = classInfo.title,
-                                dateTime = classInfo.dateTime,
-                                mentor = classInfo.mentor
-                            )
-                        }
-                    }
-
+                    BookedClassesSection(navController)
                 }
                 "Progress Check" -> {
-                    LinearProgressIndicator(
-                        progress = { 0.1f },
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f)
-                            .padding(vertical = 16.dp),
-                    )
-                    Text("2 out of 5 milestone completed", fontSize = 14.sp)
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text("Achieve a score of 70% or higher to earn your badge and certificate for completion of project", fontWeight = FontWeight.Bold)
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    HorizontalDivider(thickness = 2.dp, color = Color(0xFF004D40))
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text("In progress (0)", fontWeight = FontWeight.Bold)
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text("You have no progress check available yet")
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text("Completed (0)", fontWeight = FontWeight.Bold)
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text("You have not completed any progress check, with a score of 70% or higher yet")
+                    ProgressCheckSection()
                 }
-
+                "Job Suggestions" -> {
+                    JobSuggestionsSection()
+                }
             }
-
         }
     }
 }
 
 @Composable
-fun NavigationCard(title: String, count: Int, onCardClick: (String) -> Unit) {
+fun BookedClassesSection(navController: NavController) {
+    Text(
+        "Booked Classes (0)",
+        style = MaterialTheme.typography.bodyLarge
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Text("You do not have any classes booked")
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Button(
+        onClick = { /* Book session */ },
+        colors = ButtonDefaults.buttonColors()
+    ) {
+        Text("+ Book a Session")
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Text(
+        "Your Past Classes (9)",
+        style = MaterialTheme.typography.bodyLarge
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+
+    LazyColumn {
+        items(listOf(
+            ClassInfo("AI Project", "Tuesday 03 Sep 2024, 18:00 - 19:00",  "Prince Albert"),
+            ClassInfo("Android Development Workshop", "Monday 01 Sep 2024, 14:00 - 15:00",  "Jane Doe")
+        )) { classInfo ->
+            ClassCard(
+                title = classInfo.title,
+                dateTime = classInfo.dateTime,
+                mentor = classInfo.mentor
+            )
+        }
+    }
+}
+
+@Composable
+fun ProgressCheckSection() {
+    LinearProgressIndicator(
+        progress = 0.1f,
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .padding(vertical = 16.dp),
+    )
+    Text("2 out of 5 milestones completed", fontSize = 14.sp)
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text(
+        "Achieve a score of 70% or higher to earn your badge and certificate for completion of the project",
+        fontWeight = FontWeight.Bold
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    HorizontalDivider(thickness = 2.dp, color = Color(0xFF004D40))
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text("In progress (0)", fontWeight = FontWeight.Bold)
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Text("You have no progress check available yet")
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text("Completed (0)", fontWeight = FontWeight.Bold)
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Text("You have not completed any progress check, with a score of 70% or higher yet")
+}
+
+@Composable
+fun JobSuggestionsSection() {
+    Text(
+        text = "Job Suggestions Based on Your Profile",
+        style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+
+    LazyColumn {
+        items(listOf(
+            JobInfo("Junior AI Engineer", "TechCorp", "Remote", "Experience in AI/ML required"),
+            JobInfo("Android Developer", "MobileSolutions", "On-site", "2+ years experience in Android development"),
+            JobInfo("Data Scientist", "DataWiz", "Hybrid", "Expertise in Python, R, and SQL")
+        )) { jobInfo ->
+            JobCard(
+                title = jobInfo.title,
+                company = jobInfo.company,
+                location = jobInfo.location,
+                description = jobInfo.description
+            )
+        }
+    }
+}
+
+// Reusable Job Card
+@Composable
+fun JobCard(title: String, company: String, location: String, description: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(text = title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = company, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = location, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = description, style = MaterialTheme.typography.bodySmall)
+        }
+    }
+}
+
+data class JobInfo(val title: String, val company: String, val location: String, val description: String)
+
+
+@Composable
+fun NavigationCard(title: String, count: Int, onCardClick: (String) -> Unit,modifier: Modifier) {
     Column(
         modifier = Modifier
-            .width(150.dp)
-            .padding(8.dp)
+            .padding(top = 8.dp, bottom = 8.dp)
             .clickable {onCardClick(title)},
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -356,7 +422,7 @@ fun SearchPage(navController: NavController) {
                 Spacer(modifier = Modifier.width(16.dp))
             }
                 var expanded by remember { mutableStateOf(false) }
-                Row(modifier = Modifier.padding(start = 235.dp,top = 8.dp)) {
+                Row(modifier = Modifier.padding(start = 295.dp,top = 8.dp)) {
                     TextButton(
                         onClick = { expanded = true }
                     ) {
@@ -924,15 +990,5 @@ fun StudentBottomBar(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun Sample(){
-    var sample = Mentor(
-        id = "11",
-        name = "Ava Johnson",
-        profession = "Data Science",
-        rating = 4.8f,
-        available_dates = mapOf(
-            "2024-10-02" to listOf("10:00 AM", "3:00 PM"),
-            "2024-10-04" to listOf("9:00 AM", "1:00 PM")
-        )
-    )
-    Booking(sample, navController = rememberNavController())
+    StudentDashboard(navController = rememberNavController())
 }
